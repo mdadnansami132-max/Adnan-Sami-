@@ -200,14 +200,14 @@ Please do not disturb the admin unless you have a special need. Thank you!
 ## ✨🌟 Special Thanks 🌟✨
 
 - 🚀 **Cyber Bot Team**  
-- 🧙‍♂️ **Ullash (Owner Cyber Bot Team)**
-- 🛡️ **Sujon (Admin Cyber Bot Team)**
-- 🎓 **Grandpa EJ (Owner Grandpa Academy)** 
+- 🧙‍♂️ **MURGI CHOR🐔☢️**
+- 🛡️ **(UNITED UNEX)**
+- 🎓 **TEACHER AT (ADNAN)**
 
 ---
 
-💖 **Thank You For Choosing 𝗦𝗵𝗮𝗵𝗮𝗱𝗮𝘁 𝗖𝗵𝗮𝘁 𝗕𝗼𝘁!**  
-🗓️ *Release Date:* `11/08/2025 at 02:00`  
+💖 **ADNAN Chat 𝗕𝗼𝘁!**  
+🗓️ *Release Date:* `10/12/2025 at 02:00`  
 ⭐ **Please don't forget to give a star after forking! It really helps!**
 
 ---
@@ -220,4 +220,4 @@ Please do not disturb the admin unless you have a special need. Thank you!
   <a href="https://youtube.com/@scb-community"><img src="https://img.icons8.com/color/48/000000/youtube-play.png" alt="YouTube"></a>
 </p>
 
-**I hope you enjoy my fork! Thank you for supporting the cyber chat bot community!**
+**I hope you enjoy my fork! Thank you for supporting the cyber chat bot community**
