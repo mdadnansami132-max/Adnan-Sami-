@@ -5,7 +5,7 @@
 
 
 Assalamualaikum Everyone!  
-**Welcome to My SHAHADAT CHAT BOT Fork!**
+**Welcome to My ADNAN CHAT BOT Fork!**
 
 ![Box-shaped Image](https://i.imgur.com/u7VnPzH.png)
 
