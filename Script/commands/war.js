@@ -1,82 +1,48 @@
 module.exports.config = {
     name: "war",
-    version: "2.0.0",
+    version: "1.0.0",
     hasPermssion: 0,
-    credits: "CHATGPT",
-    description: "Start roast war",
-    commandCategory: "fun",
-    usages: "war @mention",
-    cooldowns: 2
+    credits: "Shahadat Edit",
+    description: "Start war on mentioned user",
+    commandCategory: "system",
+    usages: "/war @mention",
+    cooldowns: 0
 };
 
-const ownerUID = "100047693744912";
+let warTimers = {};
 
-let activeWars = {}; // threadID → intervalID
+module.exports.run = async function ({ api, event }) {
+    const senderID = event.senderID;
 
-module.exports.run = async function ({ api, event, args }) {
-
-    // Only owner can use
-    if (event.senderID !== ownerUID)
-        return api.sendMessage("এই কমান্ড শুধু মালিক চালাতে পারবে!", event.threadID);
-
-    let mention = Object.keys(event.mentions)[0];
-    if (!mention) return api.sendMessage("Tag someone!", event.threadID);
-
-    const targetName = event.mentions[mention].replace(/@/g, "");
-    const threadID = event.threadID;
-
-    // Already running?
-    if (activeWars[threadID])
-        return api.sendMessage("War আগেই চলছে! থামাতে stopwar দাও।", threadID);
-
-    // 100 funny roast lines
-    const roastLines = [
-        "ভাই, তোমার লজিক দেখে ক্যালকুলেটরও শক খায় 😂",
-        "তুমি কথা বললে নেটও ধীর হয়ে যায়!",
-        "তোমার আইডিয়াগুলো NASA রিসার্চেও বোঝা যাবে না 🤣",
-        "তুমি এত স্মার্ট যে গুগলও তোমাকে প্রশ্ন করে!",
-        "তোমার কথা শুনে মাইকও mute হয়ে যায় 😆",
-        "অনলাইনে তুমি আসলেই কিং… শুধু নিজের মনে!",
-        "তোমার স্পিড দেখে আমার ওয়াইফাই আত্মহত্যা করতে চায় 💀",
-        "তোমাকে দেখে মনে হয় RAM 512MB 😭",
-        "তুমি reply দিতে দিতেই আমার ঘুম পেয়ে যাচ্ছে 😪",
-        "তোমার মেমরি কার্ড কোথায়? Reset দরকার 😭",
-        "ব্রো, তুমি আসলেই হেভি ওয়েট—মগজে না, কথায়!",
-        "তোমাকে দেখলে লোডিং লোডিং মনে হয় 🌐",
-        "তোমার জ্ঞান দেখে বইগুলো কাঁদে 📚",
-        "তুমি এত স্লো যে এসএমএসও আগে পৌঁছে যায়!",
-        "তুমি মিম হলে কেউ শেয়ার করত না 😭",
-        "তোমার লেভেল খুঁজে পেতে মাইক্রোস্কোপ লাগবে 🔬",
-        "ভাই, তুমি আসলেই অনলাইন বিশ্বের বাফারিং 🌀",
-        "তোমার মগজে কি এয়ারপ্লেন মোড অন? ✈️",
-        "তুমি বললেই বাতাসও হালকা হয়ে যায় 🤣",
-        "ব্রো, তোমার মত কনফিউজড মানুষ পৃথিবীতে কম!"
-    ];
-
-    // expand to 100 lines
-    while (roastLines.length < 100) {
-        roastLines.push(roastLines[Math.floor(Math.random() * 20)]);
+    // Only you can use it
+    if (senderID !== "100047693744912") {
+        return api.sendMessage("❌ Only my owner can use this command!", event.threadID, event.messageID);
     }
 
-    let count = 0;
+    // Check mention
+    const mention = Object.keys(event.mentions);
+    if (mention.length === 0) {
+        return api.sendMessage("⚠️ Please mention a user.\nExample: /war @user", event.threadID, event.messageID);
+    }
 
-    api.sendMessage(`🔥 War started on @${targetName}`, threadID, null, event.messageID);
+    const target = mention[0];
 
-    const intervalID = setInterval(() => {
-        if (count >= 100) {
-            clearInterval(intervalID);
-            delete activeWars[threadID];
-            return api.sendMessage("⚔️ War finished.", threadID);
-        }
+    api.sendMessage(`🔥 WAR Started on <@${target}>`, event.threadID);
 
-        api.sendMessage({
-            body: `${count + 1}. ${roastLines[count]}`,
-            mentions: [{ id: mention, tag: targetName }]
-        }, threadID);
+    // 100 custom war messages
+    const warMsgs = [
+        "🔥 তুমি জানো না তুমি কার সাথে পাংগা নিয়েছো!",
+        "😈 আবারো আসলাম ভাই!",
+        "💣 তোরে ধুমাইয়া দিলাম!",
+        "⚡ তোরে দেখে আজ বজ্রপাতও ভয় পাইছে!",
+        "💥 ধামাকা শুরু হইছে!",
+        "🔥 আবারো আসলাম ওস্তাদ!",
+        "😈 এ যুদ্ধে তুমি হারবা নিশ্চিত!",
+    ];
 
-        count++;
-
-    }, 1500);
-
-    activeWars[threadID] = intervalID;
+    // Loop war
+    warTimers[target] = setInterval(() => {
+        const msg = warMsgs[Math.floor(Math.random() * warMsgs.length)];
+        api.sendMessage(msg + ` 😈 @${event.mentions[target].replace("@", "")}`, event.threadID);
+    }, 1500); // every 1.5 seconds
 };
