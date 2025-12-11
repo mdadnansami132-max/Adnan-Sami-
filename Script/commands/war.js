@@ -3,46 +3,42 @@ module.exports.config = {
     version: "1.0.0",
     hasPermssion: 0,
     credits: "Shahadat Edit",
-    description: "Start war on mentioned user",
+    description: "Start war",
     commandCategory: "system",
     usages: "/war @mention",
     cooldowns: 0
 };
 
-let warTimers = {};
+global.warTimers = global.warTimers || {};
 
 module.exports.run = async function ({ api, event }) {
-    const senderID = event.senderID;
 
-    // Only you can use it
-    if (senderID !== "100047693744912") {
-        return api.sendMessage("❌ Only my owner can use this command!", event.threadID, event.messageID);
+    // Only owner
+    if (event.senderID !== "100047693744912") {
+        return api.sendMessage("❌ Only owner can use this command!", event.threadID, event.messageID);
     }
 
-    // Check mention
+    // Mention check
     const mention = Object.keys(event.mentions);
     if (mention.length === 0) {
-        return api.sendMessage("⚠️ Please mention a user.\nExample: /war @user", event.threadID, event.messageID);
+        return api.sendMessage("⚠️ Mention someone!", event.threadID, event.messageID);
     }
 
     const target = mention[0];
 
-    api.sendMessage(`🔥 WAR Started on <@${target}>`, event.threadID);
+    api.sendMessage(`🔥 WAR STARTED ON <@${target}>`, event.threadID);
 
-    // 100 custom war messages
-    const warMsgs = [
-        "🔥 তুমি জানো না তুমি কার সাথে পাংগা নিয়েছো!",
-        "😈 আবারো আসলাম ভাই!",
-        "💣 তোরে ধুমাইয়া দিলাম!",
+    const msgs = [
+        "🔥 আবারো আসলাম ওস্তাদ!",
         "⚡ তোরে দেখে আজ বজ্রপাতও ভয় পাইছে!",
         "💥 ধামাকা শুরু হইছে!",
-        "🔥 আবারো আসলাম ওস্তাদ!",
-        "😈 এ যুদ্ধে তুমি হারবা নিশ্চিত!",
+        "😈 আবারো হাজির ভাই!",
+        "🤬 তোরে আমি ছাড়বো না!",
     ];
 
-    // Loop war
-    warTimers[target] = setInterval(() => {
-        const msg = warMsgs[Math.floor(Math.random() * warMsgs.length)];
-        api.sendMessage(msg + ` 😈 @${event.mentions[target].replace("@", "")}`, event.threadID);
-    }, 1500); // every 1.5 seconds
+    // WAR TIMER SAVE GLOBALLY
+    global.warTimers[target] = setInterval(() => {
+        const text = msgs[Math.floor(Math.random() * msgs.length)];
+        api.sendMessage(`${text}\n<@${target}>`, event.threadID);
+    }, 1500);
 };
