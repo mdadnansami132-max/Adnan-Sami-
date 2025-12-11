@@ -11,9 +11,16 @@ module.exports.config = {
 
 module.exports.run = async function ({ api, event }) {
 
-    // Only owner
-    if (event.senderID !== "100047693744912") {
-        return api.sendMessage("❌ Only owner can stop!", event.threadID, event.messageID);
+    // Multiple Admin IDs (same as war.js)
+    const admins = [
+        "100047693744912",   // Main owner
+        "100052951819398",  // second admin
+        "1000YYYYYYYYYYYY"   // third admin
+    ];
+
+    // Admin check
+    if (!admins.includes(event.senderID)) {
+        return api.sendMessage("❌ Only ADNAN can stop the war!", event.threadID, event.messageID);
     }
 
     if (!global.warTimers || Object.keys(global.warTimers).length === 0) {
