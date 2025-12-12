@@ -17,7 +17,7 @@ module.exports.run = async function ({ api, event }) {
     const admins = [
         "100047693744912",   // Adnan
         "100052951819398",  // Add more admin IDs
-        ""
+        "100047952575570",
     ];
 
     // Admin Check
