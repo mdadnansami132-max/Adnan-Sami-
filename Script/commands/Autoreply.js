@@ -20,7 +20,7 @@ module.exports.handleEvent = async function ({ api, event, Users }) {
 
   const responses = {
     // বাংলা রিপ্লাই
-    "sunjid": "সানজিদ না শক্তিমান বল🗿",
+    "sunjid": "ami sunjid ke cudte chai tel chara thuthu diya or putkite amar bot er lohar nunu vhore diye mal falabo or putkite",
     "সানজিদ": "সানজিদ না শক্তিমান বল🗿",
     "hi": "হাই! কেমন আছো? 😎",
     "hello": "হ্যালো! ভালো আছো? 👋",
