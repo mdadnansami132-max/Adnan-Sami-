@@ -1,96 +1,81 @@
 module.exports.config = {
-    name: "war",
-    version: "1.0.0",
-    hasPermssion: 0,
-    credits: "ADNAN SAMI",
-    description: "Start war",
-    commandCategory: "system",
-    usages: "/war @mention",
-    cooldowns: 0
+  name: "war",
+  version: "2.0.0",
+  hasPermssion: 0,
+  credits: "ADNAN SAMI",
+  description: "Start war on mentioned user",
+  commandCategory: "system",
+  usages: "/war @mention",
+  cooldowns: 0
 };
 
 global.warTimers = global.warTimers || {};
 
 module.exports.run = async function ({ api, event }) {
 
-    // Multiple Admin IDs here (যত খুশি বাড়াও)
-    const admins = [
-        "100052951819398",   // Adnan
-        "100047693744912",  // Add more admin IDs
-        "",
-        "",
-        "",
-    ];
+  // ✅ ADMIN IDS (ONLY TWO)
+  const admins = [
+    "100047693744912",
+    "100052951819398"
+  ];
 
-    // Admin Check
-    console.log("SenderID:", event.senderID);
-        return api.sendMessage("❌ Only Adnan can use this command!", event.threadID, event.messageID);
-    }
+  // ✅ ADMIN CHECK
+  if (!admins.includes(String(event.senderID))) {
+    return api.sendMessage(
+      "❌ Only Adnan can use this command!",
+      event.threadID,
+      event.messageID
+    );
+  }
 
-    // Mention check
-    const mentionData = event.mentions;
-    const mentionIDs = Object.keys(mentionData);
+  // ✅ MENTION CHECK
+  const mentionData = event.mentions;
+  const mentionIDs = Object.keys(mentionData);
 
-    if (mentionIDs.length === 0) {
-        return api.sendMessage("⚠️ Mention someone!", event.threadID, event.messageID);
-    }
+  if (mentionIDs.length === 0) {
+    return api.sendMessage(
+      "⚠️ কাউকে mention করো!",
+      event.threadID,
+      event.messageID
+    );
+  }
 
-    const target = mentionIDs[0];
-    const targetName = mentionData[target];
+  const target = mentionIDs[0];
+  const targetName = mentionData[target];
+
+  // ✅ ALREADY RUNNING CHECK
+  if (global.warTimers[target]) {
+    return api.sendMessage(
+      "⚠️ এই ইউজারের উপর war আগে থেকেই চলছে!",
+      event.threadID,
+      event.messageID
+    );
+  }
+
+  // ✅ WAR START MESSAGE
+  api.sendMessage({
+    body: `🔥 WAR STARTED!\nটার্গেট: ${targetName}`,
+    mentions: [{ tag: targetName, id: target }]
+  }, event.threadID);
+
+  // ✅ WAR MESSAGES (তুমি এখানে পরে ৫০–১০০টা যোগ করতে পারবে)
+  const warMessages = [
+    "🔥 যুদ্ধ শুরু হয়ে গেছে!",
+    "⚔️ সাবধান! লড়াই চলছে!",
+    "💥 চাপ বাড়ছে!",
+    "🔥 আজ পালানোর উপায় নেই!",
+    "⚡ শেষ পর্যন্ত দেখা যাক!",
+    "🛡️ শক্ত থাকো, যুদ্ধ কঠিন!"
+  ];
+
+  // ✅ INTERVAL SPAM
+  global.warTimers[target] = setInterval(() => {
+    const text = warMessages[Math.floor(Math.random() * warMessages.length)];
 
     api.sendMessage({
-        body: `🔥 WAR STARTED ON ${targetName}`,
-        mentions: [{ tag: targetName, id: target }]
+      body: `${text}\n\n${targetName}`,
+      mentions: [{ tag: targetName, id: target }]
     }, event.threadID);
 
-    const msgs = [
-        "তর মার ভু*day চায়নার চুং চিং পং বো*ma ব্লাst কইরা আমি তর মার Vhu*দায় পর*মানু সূচনা করবো",
-        "তর মাকে আমি র*কেটের সাথে বাইন্ধা ১০০০০০০ হড়স পাওয়ার এ চাদে নিয়া চু*dum",
-        "দেখ আকাশ ভরা তারা তোর মারে চু**dmu  তোর dho**ন হবে খাড়া আকাশের অনেক তারার ভিড়ে তোর মারে chu*দলাম আমি নেশার ঘোরে",
-        "বিছানার চাদর দিয়ে তর মার দু**ধ টাইট করে বেঁধে ছাদের উপর থেকে ফেলে দিমু!যাতে মানুষ দেখতে পায় le*ংটা অবস্থায়",
-        "উড়ন্ত বিমানের পাখায় বাইন্ধা তোর মারে chu*dmu যাতে ম*রার ভয়ে নাড়াচাড়া না করতে পারে",
-        "তোর মাকে দু পা কাধে উঠাইয়া chu*দতে chu*দতে বাচ্চা বানাইয়া দিমু🐸",
-        "কাঠাল গাছের গোড়া আর আম গাছের ছাল তর মারে chui*ইদ্দা করমু আমি খাল😂",
-        "যামু সুন্দরবন নিয়া আসমু হাতির dho*ন আইনা তোর মারে উপ্তা কইরা দিমু এক কঠিন চু*don🐘",
-        "তোর মাকে ভালোবাসি নারে পাগলা 😌শুধু মু*তার জায়গায় গুতা দেওয়ার ধান্দা",
-        "তোর মাকে আমি চিল নিয়া চু**ইদা তোর আম্মার ভো**দায় আমি গডজিলা ভলিউম ৩ সিনেমার শুটিং করব",
-        "গডজিলার ধো**ন দিয়া তোর মাকে চু**ইদাইবো আর তোর মায়ের গু**দের ফাক পাহাড় সমান বড় করব🙀🙀",
-        "তোর মারে শ*সান ঘাটে ফেলায় তোর মার ভো**দায় সিন্ধুর লাগায় ফে*রাউন এর ধ*ন দিয়ে চো**দাব মা*গিরপোলা🤩🤩",
-        "তোর মাকে আার তোকে আমার ধো**ন দিয়ে তোদের গু**দে এমন ঠেলা দিমু যে তোদের পিছন দিয়া গু বের হয়ে যাবে",
-        "তোর বইনরে দেই কঠিন চো  দন৷ তোর মায় চাটে আমার লম্বা ধো  ন",
-        "আমার বউ তোর বোন তারে ঢুকামু আফ্রিকান হাতির ধ**ন",
-        "ধো  নে আমার ত্যরামি করে তাই তোর আম্মা কান্না করে",
-        "তোর মারে চু   দি  আমি রাস্তার ধারে তোর  বইনরে আমার কুত্তায় পু  টকি মারে",
-        "তোর মারে চু   দি  কারন চাড়া করিস না তুই ত্যরাব্যরা",
-        "তোর মায়ের পাচায় কালা চাপ চো   দা  খেয়ে বলে বাপ রে বাপ",
-        "চু   দে  যাব তোর মারে ধরে সো   নার  ভিতর হারপিক ভরে",
-        "ku*ত্তায় chu*দে রাস্তায় বাঘ chu*দে বনে তোর মায়ের কালা vho*দা chu*দমু আমি ঘরের এক কোনে",
-        "আমি গালি জানি না গালি গেছি ভুইলা তোর মায়ের চু**দমু ছায়া বেলাউুজ খুইলা তোর আ*বাল জাতের মায়ের চু**দি খাং**কির পোলা",
-        "তোমার আম্মুকে আমি চু দ বো আর তুমি তোমার মাকে দু পা পাক করে ধরবা কেমন ছেলে😊🥰",
-        "তোর মাকে চু*দে চু*দে করিছে বো*দা লাল তোর মা বলে আমাকে আরো চু*দে দাও একটা এনে আ*বাল",
-        "তোর মায়ের সা**উয়ার বারিন্দা আমি রাবিন্দ্রনাতের ধো**ন দিয়া পিটিয়ে পিটিয়ে ভাঙ্গবো",
-        "তোর মারে শ*সান ঘাটে ফেলায় তোর মার ভো**দায় সিন্ধুর লাগায় ফে*রাউন এর ধ*ন দিয়ে চো**দাব মা*গিরপোলা🤩🤩",
-        "গডজিলার ধো**ন দিয়া তোর মাকে চু**ইদাইবো আর তোর মায়ের গু**দের ফাক পাহাড় সমান বড় করব🙀🙀",
-        "তোর মাকে আমি চিল নিয়া চু**ইদা তোর আম্মার ভো**দায় আমি গডজিলা ভলিউম ৩ সিনেমার শুটিং করব",
-        "তোর মাকে আমি মারভেল সুপারহিরো ডেডপুলের আল্টিমেট হিলিং পাওয়ার্ড ডি**ক দিয়া চু**দাইবো😱😻",
-        "এক মহা নিস্তব্ধ পরিবেশে আপনার জননেত্রী মাকে আমি বাংলা চা*টু সিনেমা দেখানোর নাম করে চু**দবো💋",
-        "তর মারে আমি চু**দি যদি কারন যানতে চাষ কেন তর মারে চু**দি তাইলে আমি কারনের মারেও চু**দি কারন তর মারে আমি কোন কারন ছাড়া চু*দি",
-        "জামার নিছে আছে নাকি জাইজ্ঞা তর মারে চু**দমু হাত পা বাইন্ধা",
-        "তোর মাকে ভালোবাসি নারে পাগলা 😌শুধু মু*তার জায়গায় গুতা দেওয়ার ধান্দা",
-        "চিরবিনাময়ী আধুরীমুক্ত ফাল্গুনী বাতাসের তালে হস্ত**মৈথুন করিয়া মাল পেলিয়াছি তোর মার গালে",
-        "খান**কির  ছেলে তোর মার ভো**দায় আমার গরম মাল💦তর মার ভু**দায় আমার ধ**ন",
-        "তোর মারে আচার এর লোভ দেখিয়ে চু**দি💋💦তর বইনরে চ*টি সুনাইয়া চু****দি",
-        "তোর আম্মুর পমপম দিয়া আমি আমার গাড়ির হরন বানামু🎷",
-        "তের মার ভো  দায় রাসায়নিক বন্ধন বাড়িয়ে তোর মার ভো  দার মাল তোর মার পুটকি দিয়া বাইর করি",
-    ];
-
-    global.warTimers[target] = setInterval(() => {
-        const text = msgs[Math.floor(Math.random() * msgs.length)];
-
-        api.sendMessage({
-            body: `${text}\n\n${targetName}`,
-            mentions: [{ tag: targetName, id: target }]
-        }, event.threadID);
-
-    }, 1500);
+  }, 1500);
 };
