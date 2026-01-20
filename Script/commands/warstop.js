@@ -1,40 +1,57 @@
 module.exports.config = {
-    name: "warstop",
-    version: "1.0.0",
-    hasPermssion: 0,
-    credits: "Shahadat Edit",
-    description: "Stop war",
-    commandCategory: "system",
-    usages: "/warstop",
-    cooldowns: 0
+  name: "stopwar",
+  version: "1.0.0",
+  hasPermssion: 0,
+  credits: "ADNAN SAMI",
+  description: "Stop war",
+  commandCategory: "system",
+  usages: "/stopwar @mention",
+  cooldowns: 0
 };
 
 module.exports.run = async function ({ api, event }) {
 
-    // Multiple Admin IDs (same as war.js)
-    const admins = [
-        "100052951819398",   // Main owner
-        "100047693744912",  // second admin
-        "",
-        "",
-        "",
-    ];
+  const admins = [
+    "100047693744912",
+    "100052951819398"
+  ];
 
-    // Admin check
-    if (!admins.includes(event.senderID)) {
-        return api.sendMessage("❌ Only ADNAN can stop the war!", event.threadID, event.messageID);
-    }
+  // ✅ ADMIN CHECK
+  if (!admins.includes(String(event.senderID))) {
+    return api.sendMessage(
+      "❌ Only Adnan can stop war!",
+      event.threadID,
+      event.messageID
+    );
+  }
 
-    if (!global.warTimers || Object.keys(global.warTimers).length === 0) {
-        return api.sendMessage("⚠️ War is not running!", event.threadID, event.messageID);
-    }
+  const mentionData = event.mentions;
+  const mentionIDs = Object.keys(mentionData);
 
-    // CLEAR ALL TIMERS
-    for (let id in global.warTimers) {
-        clearInterval(global.warTimers[id]);
-    }
+  if (mentionIDs.length === 0) {
+    return api.sendMessage(
+      "⚠️ কাউকে mention করো যার war বন্ধ করবে!",
+      event.threadID,
+      event.messageID
+    );
+  }
 
-    global.warTimers = {};
+  const target = mentionIDs[0];
 
-    api.sendMessage("🛑 WAR STOPPED SUCCESSFULLY!", event.threadID, event.messageID);
+  if (!global.warTimers[target]) {
+    return api.sendMessage(
+      "⚠️ এই ইউজারের উপর কোনো war চলছে না!",
+      event.threadID,
+      event.messageID
+    );
+  }
+
+  clearInterval(global.warTimers[target]);
+  delete global.warTimers[target];
+
+  api.sendMessage(
+    "🛑 WAR STOPPED SUCCESSFULLY!",
+    event.threadID,
+    event.messageID
+  );
 };
