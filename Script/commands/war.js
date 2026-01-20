@@ -15,11 +15,11 @@ module.exports.run = async function ({ api, event }) {
 
     // Multiple Admin IDs here (যত খুশি বাড়াও)
     const admins = [
-        "100047693744912",   // Adnan
-        "100052951819398",  // Add more admin IDs
-        "100047952575570",
-        "100067557161959",
-        "100052951819398",
+        "100052951819398",   // Adnan
+        "100047693744912",  // Add more admin IDs
+        "",
+        "",
+        "",
     ];
 
     // Admin Check
