@@ -23,7 +23,7 @@ module.exports.run = async function ({ api, event }) {
     ];
 
     // Admin Check
-    if (!admins.includes(String(event.senderID))) {
+    console.log("SenderID:", event.senderID);
         return api.sendMessage("❌ Only Adnan can use this command!", event.threadID, event.messageID);
     }
 
